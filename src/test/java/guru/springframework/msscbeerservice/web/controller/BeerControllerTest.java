@@ -11,14 +11,13 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.math.BigDecimal;
+import java.util.UUID;
+
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyBoolean;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-import java.math.BigDecimal;
-import java.util.UUID;
 
 @WebMvcTest
 class BeerControllerTest {
@@ -42,7 +41,7 @@ class BeerControllerTest {
     @Test
     void saveNewBeer() throws Exception {
 
-        BeerDto beerDto = BeerDto.builder().build();
+        BeerDto beerDto = getValidBeerDto();
         String beerDtoJson = objectMapper.writeValueAsString(beerDto);
 
         given(beerService.saveNewBeer(any())).willReturn(beerDto);
@@ -56,7 +55,7 @@ class BeerControllerTest {
     @Test
     void updateBeerById() throws Exception {
 
-        BeerDto beerDto = BeerDto.builder().build();
+        BeerDto beerDto = getValidBeerDto();
         String beerDtoJson = objectMapper.writeValueAsString(beerDto);
         mockMvc.perform(put("/api/v1/beer/" + UUID.randomUUID().toString())
                         .contentType(MediaType.APPLICATION_JSON)
@@ -64,12 +63,12 @@ class BeerControllerTest {
                 .andExpect(status().isNoContent());
     }
 
-    /*BeerDto getValidBeerDto(){
+    BeerDto getValidBeerDto(){
         return BeerDto.builder()
                 .beerName("My Beer")
                 .beerStyle(BeerStyleEnum.ALE)
                 .price(new BigDecimal("2.99"))
-                .upc(BeerLoader.BEER_1_UPC)
+                .upc(123123123132L)
                 .build();
-    }*/
+    }
 }
